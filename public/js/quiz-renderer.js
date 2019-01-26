@@ -52,7 +52,7 @@ class QuizRenderer {
 
   renderCompatibilityReport(bestMatch) {
     // this data shape is ugly! refactor it :) 
-    const matchName = bestMatch[0][0].value;
+    const matchName = bestMatch.value;
     const h3 = createH3(matchName);
     this.resultsBoxEl.appendChild(h3);
   }

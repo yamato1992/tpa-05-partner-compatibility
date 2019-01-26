@@ -1,26 +1,39 @@
 const { candidates } = require('./data/candidates-data.js');
 
-const calculateBestMatch = function(quizSubmissions) {
+const EXACT_ANSWER_POINT = 2;
+const NEARLY_ANSWER_POINT = 1;
 
+const calculateAnswerAbsDiff = function(candidateValue, quizSubmission) {
+  return Math.abs(parseInt(candidateValue, 10) - parseInt(quizSubmission, 10));
+};
+
+const calculateBestMatch = function(quizSubmissions) {
   let bestMatch = candidates[0];
   let maxScore = 0;
-  for (let i = 0; i < candidates.length; i += 1) {
+
+  candidates.forEach((candidate) => {
     let score = 0;
-    for (let j = 2; j < quizSubmissions.length; j += 1) {
-      for (let k = 0; k < quizSubmissions[j].length; k += 1) {
-        if (candidates[i][j][k].value === quizSubmissions[j][k].value) {
-          score += 2;
-        }
-        if (Math.abs(parseInt(candidates[i][j][k].value, 10) - parseInt(quizSubmissions[j][k].value, 10)) === 1) {
-          score += 1;
+    for (let i = 2; i < quizSubmissions.length; i += 1) {
+      for (let j = 0; j < quizSubmissions[i].length; j += 1) {
+        const diff = calculateAnswerAbsDiff(candidate[i][j].value, quizSubmissions[i][j]);
+        switch (diff) {
+        case 0:
+          score += EXACT_ANSWER_POINT;
+          break;
+        case 1:
+          score += NEARLY_ANSWER_POINT;
+          break;
+        default:
+          break;
         }
       }
     }
     if (score > maxScore) {
-      bestMatch = candidates[i];
+      bestMatch = candidate;
       maxScore = score;
     }
-  }
+  });
+
   return bestMatch[0][0];
 };
 

@@ -75,7 +75,7 @@ const quizData = {
       answers: [
         'お寿司',
         'ラーメン',
-        'パスた',
+        'パスタ',
         'ハンバーガー',
       ],
       rankingWeight: 1.0,
